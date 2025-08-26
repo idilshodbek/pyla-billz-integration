@@ -1,7 +1,4 @@
-import dotenv from 'dotenv';
-
-// Load environment variables
-dotenv.config();
+require('dotenv').config();
 
 export interface AppConfig {
   port: number;
@@ -10,9 +7,7 @@ export interface AppConfig {
     uri: string;
   };
   redis: {
-    host: string;
-    port: number;
-    password?: string;
+    url: string;
   };
   billz: {
     token: string;
@@ -31,9 +26,7 @@ export const config: AppConfig = {
     uri: process.env.MONGODB_URI || 'mongodb://localhost:27017/billz_microservice',
   },
   redis: {
-    host: process.env.REDIS_HOST || 'localhost',
-    port: parseInt(process.env.REDIS_PORT || '6379'),
-    password: process.env.REDIS_PASSWORD,
+    url: process.env.REDIS_URL || 'redis://localhost:6379',
   },
   billz: {
     token: process.env.BILLZ_TOKEN || '',

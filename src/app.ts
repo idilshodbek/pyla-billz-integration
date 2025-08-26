@@ -1,3 +1,4 @@
+require('dotenv').config();
 import { database } from './config/database';
 import { redisConnection } from './config/redis';
 import { billzWorker } from './workers/billz.worker';

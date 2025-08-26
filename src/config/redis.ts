@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 import Redis from 'ioredis';
 
 export class RedisConnection {
@@ -19,17 +21,13 @@ export class RedisConnection {
     }
 
     try {
-      const redisConfig = {
-        host: process.env.REDIS_HOST || 'localhost',
-        port: parseInt(process.env.REDIS_PORT || '6379'),
-        password: process.env.REDIS_PASSWORD || undefined,
-        retryDelayOnFailover: 100,
+      const redisUrl = process.env.REDIS_URL || 'redis://localhost:6379';
+
+      this.redis = new Redis(redisUrl, {
         enableReadyCheck: false,
         maxRetriesPerRequest: 3,
         lazyConnect: true,
-      };
-
-      this.redis = new Redis(redisConfig);
+      });
 
       // Handle connection events
       this.redis.on('connect', () => {

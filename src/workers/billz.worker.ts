@@ -1,3 +1,4 @@
+require('dotenv').config();
 import { Worker, Job } from 'bullmq';
 import { redisConnection } from '../config/redis';
 import Billz from '../services/billz.service';
@@ -270,6 +271,7 @@ export class BillzWorker {
   }
 
   private async handleGetOrder(data: GetOrderJobData, correlationId?: string): Promise<void> {
+    console.log('==========================1')
     const { orderId } = data;
     await this.billzService.getOrder(orderId);
 
