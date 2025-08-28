@@ -1,7 +1,7 @@
 // Job data interfaces for Billz operations
 export interface BillzJobData {
   type: 'CREATE_CLIENT' | 'CREATE_ORDER' | 'ADD_ITEM' | 'ADD_CLIENT' | 'POSTPONE_ORDER' | 
-        'CANCEL_POSTPONE' | 'CREATE_DISCOUNT' | 'MAKE_PAYMENT' | 'DELETE_ORDER' | 'GET_ORDER';
+        'CANCEL_POSTPONE' | 'CREATE_DISCOUNT' | 'MAKE_PAYMENT' | 'DELETE_ORDER' | 'GET_ORDER' | 'PLACE_ORDER';
   payload: any;
   correlationId?: string;
   timestamp?: number;
@@ -52,4 +52,50 @@ export interface DeleteOrderJobData {
 
 export interface GetOrderJobData {
   orderId: string;
+}
+
+export interface PlaceOrderJobData {
+  _id: string;
+  isPostPonement: boolean;
+  isPaid: boolean;
+  deliveryStatus: string;
+  storeId: string;
+  storeExternalID: string;
+  paymentMethod: string;
+  regionId: string;
+  paidAmount: number;
+  deliveryAddress: {
+    street: string;
+    city: string;
+    apartment: string;
+    floor: string | null;
+    entrance: string | null;
+  };
+  coordinates: {
+    latitude: number;
+    longitude: number;
+    accuracy: number;
+  };
+  products: Array<{
+    productID: string;
+    qty: number;
+    name: any;
+    sku: string;
+    barCode: string;
+    imageUrl: string;
+    subTotalPrice: number;
+    totalPrice: number;
+    discountAmount: number;
+  }>;
+  subTotalPrice: number;
+  discountAmount: number;
+  totalPrice: number;
+  deliverySubTotalPrice: number;
+  clientIdSys: string;
+  createdBy: string;
+  region: string;
+  store: string;
+  orderID: number;
+  employeeName: string;
+  userId?: string;
 }

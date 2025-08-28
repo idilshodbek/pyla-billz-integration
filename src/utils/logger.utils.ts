@@ -34,7 +34,6 @@ export class Logger {
       });
 
       const savedLog = await logEntry.save();
-      console.log(`✅ Success logged: ${data.section}.${data.action}`);
       return savedLog;
     } catch (error: any) {
       console.error('Failed to log success:', error.message);

@@ -107,6 +107,7 @@ This service listens to the `billz-operations` queue and processes incoming jobs
 - `MAKE_PAYMENT` - Process payment
 - `DELETE_ORDER` - Delete an order
 - `GET_ORDER` - Get order details
+- `PLACE_ORDER` - Place a complete order (comprehensive operation)
 
 ### Example Job Payloads (sent by main microservice)
 
@@ -146,6 +147,59 @@ This service listens to the `billz-operations` queue and processes incoming jobs
   },
   correlationId: 'unique_id_125',
   timestamp: 1234567892
+}
+
+// PLACE_ORDER job (comprehensive order placement)
+{
+  type: 'PLACE_ORDER',
+  payload: {
+    isPostPonement: false,
+    isPaid: false,
+    deliveryStatus: 'pending',
+    storeId: 'store123',
+    storeExternalID: 'ext_store_123',
+    paymentMethod: 'online',
+    regionId: '64a7b8c9d5e6f7890abcdef1',
+    paidAmount: 0,
+    deliveryAddress: {
+      street: 'Main Street 123',
+      city: 'Tashkent',
+      apartment: '5A',
+      floor: '2',
+      entrance: 'A'
+    },
+    coordinates: {
+      latitude: 41.2995,
+      longitude: 69.2401,
+      accuracy: 10
+    },
+    products: [
+      {
+        productID: 'prod123',
+        qty: 2,
+        name: { en: 'Product Name', uz: 'Mahsulot nomi' },
+        sku: 'SKU123',
+        barCode: '1234567890123',
+        imageUrl: 'https://example.com/image.jpg',
+        subTotalPrice: 100,
+        totalPrice: 100,
+        discountAmount: 0
+      }
+    ],
+    subTotalPrice: 100,
+    discountAmount: 0,
+    totalPrice: 100,
+    deliverySubTotalPrice: 20,
+    clientIdSys: '64a7b8c9d5e6f7890abcdef2',
+    createdBy: '64a7b8c9d5e6f7890abcdef3',
+    region: 'Tashkent',
+    store: 'Main Store',
+    orderID: 12345,
+    employeeName: 'John Doe',
+    userId: '64a7b8c9d5e6f7890abcdef4'
+  },
+  correlationId: 'unique_id_126',
+  timestamp: 1234567893
 }
 ```
 

@@ -15,7 +15,8 @@ import {
   CreateDiscountJobData,
   MakePaymentJobData,
   DeleteOrderJobData,
-  GetOrderJobData
+  GetOrderJobData,
+  PlaceOrderJobData
 } from '../interfaces';
 
 export class BillzWorker {
@@ -114,6 +115,10 @@ export class BillzWorker {
 
         case 'GET_ORDER':
           await this.handleGetOrder(payload as GetOrderJobData, correlationId);
+          break;
+
+        case 'PLACE_ORDER':
+          await this.handlePlaceOrder(payload as PlaceOrderJobData, correlationId);
           break;
 
         default:
@@ -285,6 +290,33 @@ export class BillzWorker {
     });
   }
 
+  private async handlePlaceOrder(data: PlaceOrderJobData, correlationId?: string): Promise<void> {
+    // Convert the job data to the format expected by the placeOrder method
+    const orderData = {
+      ...data,
+      regionId: data.regionId as any, // Convert string back to ObjectId if needed
+      createdBy: data.createdBy as any, // Convert string back to ObjectId if needed
+      userId: data.userId ? data.userId as any : undefined,
+    };
+
+    await this.billzService.placeOrder(orderData);
+
+    await logger.logBillzSuccess({
+      action: Action.CREATE,
+      orderId: data.orderID.toString(),
+      description: {
+        operation: 'place_order',
+        orderID: data.orderID,
+        clientIdSys: data.clientIdSys,
+        totalPrice: data.totalPrice,
+        productsCount: data.products.length,
+        storeId: data.storeId,
+        region: data.region
+      },
+      correlationId,
+    });
+  }
+
   /**
    * Map job types to actions for logging
    */
@@ -295,6 +327,7 @@ export class BillzWorker {
       case 'ADD_ITEM':
       case 'CREATE_DISCOUNT':
       case 'MAKE_PAYMENT':
+      case 'PLACE_ORDER':
         return Action.CREATE;
 
       case 'ADD_CLIENT':
