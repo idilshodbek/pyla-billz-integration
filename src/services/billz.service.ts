@@ -540,7 +540,6 @@ class Billz {
             });
             return null;
         }
-
         const data: BillzPaymentData = {
             method: "order.make_payment",
             "params": {
@@ -554,7 +553,6 @@ class Billz {
                 "order_id": order_id
             }
         };
-
         try {
             const getSingleSaleInfo = await axios.get(`https://api-admin.billz.ai/v2/order/${order_id}`, {
                 headers
